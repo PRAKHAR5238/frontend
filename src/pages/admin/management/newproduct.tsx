@@ -24,20 +24,30 @@ const NewProduct = () => {
   const navigate = useNavigate();
 
   // ✅ Handle file selection and previews
-  const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
+// ✅ Handle file selection and previews with size check
+const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const files = e.target.files;
+  if (!files) return;
 
-    const fileArray = Array.from(files);
-    setPhotos(fileArray);
+  const fileArray = Array.from(files);
+  
+  // ✅ Filter out files larger than 10 MB
+  const validFiles = fileArray.filter((file) => file.size <= 10485760); // 10 MB
 
-    // ✅ Revoke old preview URLs
-    photoPreviews.forEach((url) => URL.revokeObjectURL(url));
+  if (validFiles.length !== fileArray.length) {
+    alert("One or more files exceed the 10 MB size limit.");
+  }
 
-    // ✅ Generate new preview URLs
-    const previewUrls = fileArray.map((file) => URL.createObjectURL(file));
-    setPhotoPreviews(previewUrls);
-  };
+  setPhotos(validFiles);
+
+  // ✅ Revoke old preview URLs
+  photoPreviews.forEach((url) => URL.revokeObjectURL(url));
+
+  // ✅ Generate new preview URLs
+  const previewUrls = validFiles.map((file) => URL.createObjectURL(file));
+  setPhotoPreviews(previewUrls);
+};
+
 
   // ✅ Form submit handler
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {

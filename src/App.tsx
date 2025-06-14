@@ -20,6 +20,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./redux/api/Userapi";
 import { userReducerinitialstate } from "./types/reducer-types";
 import ProtectedRoute from "./components/protectedroutes";
+import DiscountManagement from "./pages/admin/management/dicountmanagement";
+import Footer from "./components/footer";
+
 
 // Register ChartJS components
 ChartJS.register(
@@ -36,6 +39,7 @@ ChartJS.register(
 const Home = lazy(() => import("./pages/Home"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Search = lazy(() => import("./pages/Search"));
+const Productdetails = lazy(() => import("./pages/Productdetails"));
 
 // Logged in user routes
 const Shipping = lazy(() => import("./pages/shipping"));
@@ -56,8 +60,13 @@ const Coupon = lazy(() => import("./pages/admin/apps/coupon"));
 const Stopwatch = lazy(() => import("./pages/admin/apps/stopwatch"));
 const Toss = lazy(() => import("./pages/admin/apps/toss"));
 const NewProduct = lazy(() => import("./pages/admin/management/newproduct"));
+const Discount = lazy(() => import("./pages/admin/management/coupoun"));
+
 const ProductManagement = lazy(
   () => import("./pages/admin/management/productmanagement")
+);
+const Newdiscount = lazy(
+  () => import("./pages/admin/management/Newdiscount")
 );
 const TransactionManagement = lazy(
   () => import("./pages/admin/management/transactionmanagement")
@@ -74,16 +83,14 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       setIsLoading(true);
-        if (user) {
-          const data = await getUser(user.uid);
-          
-          data? dispatch(userExist(data.user)): dispatch(userNotExist());
+      if (user) {
+        const data = await getUser(user.uid);
 
-        }else{
-          dispatch(userNotExist())
-        };
-        setIsLoading(false)
-      
+        data ? dispatch(userExist(data.user)) : dispatch(userNotExist());
+      } else {
+        dispatch(userNotExist());
+      }
+      setIsLoading(false);
     });
   }, []);
   return loading || isloading ? (
@@ -96,6 +103,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/product/:id" element={<Productdetails />} />
 
           {/* Not logged in route */}
           <Route
@@ -129,6 +137,8 @@ const App = () => {
           <Route path="/admin/product" element={<Products />} />
           <Route path="/admin/customer" element={<Customers />} />
           <Route path="/admin/transaction" element={<Transaction />} />
+          <Route path="/admin/discount" element={<Discount />} />
+
 
           {/* Charts */}
           <Route path="/admin/chart/bar" element={<Barcharts />} />
@@ -143,6 +153,8 @@ const App = () => {
           {/* Management */}
           <Route path="/admin/product/new" element={<NewProduct />} />
           <Route path="/admin/product/:id" element={<ProductManagement />} />
+          <Route path="/admin/discount/new" element={<Newdiscount />} />
+          <Route path="/admin/discount/:id" element={<DiscountManagement />} />
           <Route
             path="/admin/transaction/:id"
             element={<TransactionManagement />}
@@ -152,6 +164,7 @@ const App = () => {
           {/* </Route> */}
         </Routes>
       </Suspense>
+            <Footer />
       <Toaster position="bottom-center" />
     </Router>
   );

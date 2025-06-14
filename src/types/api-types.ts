@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { bar, CartItem, line, Order,  Pie,  Product, shippinginfo } from "./types";
+import { bar, CartItem, Coupontypes, line, Order,  Pie,  Product, Review, shippinginfo } from "./types";
 
 // ✅ Message and User Responses
 export type MessageResponse = {
@@ -16,6 +16,16 @@ export type UserResponse = {
   user: User;
   success: boolean;
 };
+
+export type AllDiscountResponse={
+success:boolean;
+coupons:Coupontypes[]
+}
+export type SingleDiscountResponse = {
+  success: boolean;
+  coupon: Coupontypes;
+};
+
 
 // ✅ User Requests
 export interface DeleteUserRequest {
@@ -54,6 +64,11 @@ export type LineResponse = {
   success: boolean;
   charts: line;
 };
+export type AllReviewResponse = {
+  success: boolean;
+  reviews: Review[];
+};
+
 
 // ✅ Product Requests
 export type CreateProductRequest = {
@@ -83,6 +98,19 @@ export type SearchProductRequest = {
 
 export type SearchProductResponse = AllProductsResponse & {
   totalPage: number;
+};
+
+export type NewReviewRequest = {
+  rating: number;
+  comment: string;
+  userId?: string;
+  productId: string;
+};
+
+
+export type DeleteReviewRequest = {
+  userId?: string;
+  reviewId: string;
 };
 
 // ✅ Orders

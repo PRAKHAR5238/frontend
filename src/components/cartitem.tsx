@@ -19,7 +19,13 @@ const cartitem = ({
   const { photo, name, productId, quantity, price } = Cartitem;
   return (
     <div className="cart-itms">
-      <img src={`${server}/${photo}`} alt={name} />
+      <img
+  src={
+    photo.includes("http") ? photo : `${server}/${photo}`
+  }
+  alt={name}
+/>
+
       <article>
         <Link to={`/product/${productId}`}>{name}</Link>
         <p>

@@ -8,7 +8,14 @@ import { useDispatch } from "react-redux";
 import { CartItem } from "../types/types";
 import { addToCart } from "../redux/reducer/cartReducer";
 
-// Type for the product data response, ensure this matches your API response
+import { FaAnglesDown, FaHeadset } from "react-icons/fa6";
+import videoCover from "../assets/videos/cover.mp4";
+
+import { motion } from "framer-motion";
+import { Slider } from "6pp";
+import { TbTruckDelivery } from "react-icons/tb";
+import { LuShieldCheck } from "react-icons/lu";
+
 interface Product {
   _id: string;
   name: string;
@@ -18,58 +25,204 @@ interface Product {
 }
 
 const Home = () => {
-  const dispatch=useDispatch()
-  // Make sure to call the query without an argument if it's not expecting one
-  const { data, isError, isLoading } = useLatestProductsQuery(); // No argument passed
+  const dispatch = useDispatch();
+  const { data, isError, isLoading } = useLatestProductsQuery();
 
-  // Handler for adding to the cart
-  const addtocartHandler = (cartitem:CartItem) => {
-    if(cartitem.stock<1)return toast.error("out of stock");
+  const addtocartHandler = (cartitem: CartItem) => {
+    if (cartitem.stock < 1) return toast.error("Out of stock");
     dispatch(addToCart(cartitem));
-    toast.success("Add to Cart")
-   
+    toast.success("Added to Cart");
   };
 
-  // Handling loading and error states
-  if (isLoading) {
-    return <SkeletonLoader />; // Use Loader component for loading state
-  }
+  if (isLoading) return <SkeletonLoader />;
+  if (isError) toast.error("Cannot fetch product");
 
-  if (isError) {
-    toast.error("Cannot fetch Product");
-   
-  }
+  const clients = [
+    { src: "https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21.svg", alt: "react" },
+    { src: "https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg", alt: "node" },
+    { src: "https://www.vectorlogo.zone/logos/mongodb/mongodb-ar21.svg", alt: "mongodb" },
+    { src: "https://www.vectorlogo.zone/logos/expressjs/expressjs-ar21.svg", alt: "express" },
+    { src: "https://www.vectorlogo.zone/logos/js_redux/js_redux-ar21.svg", alt: "redux" },
+    { src: "https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-ar21.svg", alt: "typescript" },
+    { src: "https://www.vectorlogo.zone/logos/sass-lang/sass-lang-ar21.svg", alt: "sass" },
+    { src: "https://www.vectorlogo.zone/logos/firebase/firebase-ar21.svg", alt: "firebase" },
+    { src: "https://www.vectorlogo.zone/logos/figma/figma-ar21.svg", alt: "figma" },
+    { src: "https://www.vectorlogo.zone/logos/github/github-ar21.svg", alt: "github" },
+    { src: "https://www.vectorlogo.zone/logos/docker/docker-ar21.svg", alt: "Docker" },
+    { src: "https://www.vectorlogo.zone/logos/kubernetes/kubernetes-ar21.svg", alt: "Kubernetes" },
+    { src: "https://www.vectorlogo.zone/logos/nestjs/nestjs-ar21.svg", alt: "Nest.js" },
+    { src: "https://www.vectorlogo.zone/logos/graphql/graphql-ar21.svg", alt: "GraphQL" },
+    { src: "https://www.vectorlogo.zone/logos/jestjsio/jestjsio-ar21.svg", alt: "Jest" },
+    { src: "https://www.vectorlogo.zone/logos/redis/redis-ar21.svg", alt: "Redis" },
+    { src: "https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg", alt: "PostgreSQL" },
+    { src: "https://www.vectorlogo.zone/logos/jenkins/jenkins-ar21.svg", alt: "Jenkins" },
+  ];
+
+  const banners = [
+    "https://res.cloudinary.com/dj5q966nb/image/upload/v1719253445/rmbjpuzctjdbtt8hewaz.png",
+    "https://res.cloudinary.com/dj5q966nb/image/upload/v1719253433/ticeufjqvf6napjhdiee.png",
+  ];
+
+  const categories = [
+    "Electronics", "Mobiles", "Laptops", "Books", "Fashion", "Appliances",
+    "Furniture", "Home Decor", "Grocery", "Beauty", "Toys", "Fitness"
+  ];
+
+  const coverMessage = "Fashion isn't just clothes; it's a vibrant language. Silhouettes and textures speak volumes, a conversation starter with every bold print. It's a way to tell our story, a confidence booster, or a playful exploration. From elegance to rebellion, fashion lets us navigate the world in style.".split(" ");
+
+  const services = [
+    {
+      icon: <TbTruckDelivery />, title: "FREE AND FAST DELIVERY",
+      description: "Free delivery for all orders over $200"
+    },
+    {
+      icon: <LuShieldCheck />, title: "SECURE PAYMENT",
+      description: "100% secure payment"
+    },
+    {
+      icon: <FaHeadset />, title: "24/7 SUPPORT",
+      description: "Get support 24/7"
+    },
+  ];
 
   return (
-    <div className="home">
-    <section className="banner" />
+    <>
+      <div className="home">
+        <section></section>
 
-    <h1 className="title">
-      Latest Products
-      <Link to="/search" className="findmore">
-        See More
-      </Link>
-    </h1>
+        <div>
+          <aside>
+            <h1>Categories</h1>
+            <ul>
+              {categories.map((i) => (
+                <li key={i}>
+                  <Link to={`/search?category=${i.toLowerCase()}`}>{i}</Link>
+                </li>
+              ))}
+            </ul>
+          </aside>
 
-      <main className="products">
-        {isLoading?(<SkeletonLoader/>): data?.products.map((product: Product) => (
-          <ProductCard
-            key={product._id} // Key prop for unique rendering
-            productId={product._id}
-            name={product.name}
-            price={product.price}
-            photo={
-              product.photos?.[0]?.url 
-                ? (product.photos[0].url.includes('http') ? '' : 'http://localhost:4000/') + product.photos[0].url 
-                : ''
-            }
-            stock={product.stock}
-            handler={addtocartHandler} // Pass the productId to the handler
-                server=""
-          />
-        ))}
-      </main>
-    </div>
+          <Slider autoplay autoplayDuration={1500} showNav={false} images={banners} />
+        </div>
+
+        <h1 className="title">
+          Latest Products
+          <Link to="/search" className="findmore">See More</Link>
+        </h1>
+
+        <main className="products">
+          {data?.products.map((product: Product) => (
+            <ProductCard
+              key={product._id}
+              productId={product._id}
+              name={product.name}
+              price={product.price}
+              photo={
+                product.photos?.[0]?.url
+                  ? (product.photos[0].url.includes("http") ? "" : "http://localhost:4000/") + product.photos[0].url
+                  : ""
+              }
+              stock={product.stock}
+              handler={addtocartHandler}
+              server=""
+            />
+          ))}
+        </main>
+      </div>
+
+      <article className="cover-video-container">
+        <div className="cover-video-overlay" />
+        <video autoPlay loop muted src={videoCover} />
+        <div className="cover-video-content">
+          <motion.h2
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            Fashion
+          </motion.h2>
+          {coverMessage.map((el, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25, delay: i / 10 }}
+            >
+              {el} {" "}
+            </motion.span>
+          ))}
+        </div>
+        <motion.span
+          animate={{
+            y: [0, 10, 0],
+            transition: { duration: 1, repeat: Infinity },
+          }}
+        >
+          <FaAnglesDown />
+        </motion.span>
+      </article>
+
+      <article className="our-clients">
+        <div>
+          <h2>Our Clients</h2>
+          <div>
+            {clients.map((client, i) => (
+              <motion.img
+                key={i}
+                src={client.src}
+                alt={client.alt}
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  transition: { delay: i / 20, ease: "circIn" },
+                }}
+              />
+            ))}
+          </div>
+          <motion.p
+            initial={{ opacity: 0, y: -100 }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+              transition: { delay: clients.length / 20 },
+            }}
+          >
+            Trusted by 100+ companies in 30+ countries
+          </motion.p>
+        </div>
+      </article>
+
+      <hr
+        style={{
+          backgroundColor: "rgba(0,0,0,0.1)",
+          border: "none",
+          height: "1px",
+        }}
+      />
+
+      <article className="our-services">
+        <ul>
+          {services.map((service, i) => (
+            <motion.li
+              key={service.title}
+              initial={{ opacity: 0, y: -100 }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { delay: i / 20 },
+              }}
+            >
+              <div>{service.icon}</div>
+              <section>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+              </section>
+            </motion.li>
+          ))}
+        </ul>
+      </article>
+    </>
   );
 };
 

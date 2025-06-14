@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import ProductCard from "../components/productcard";
 import { useDispatch } from "react-redux";
 import {
@@ -11,9 +11,12 @@ import toast from "react-hot-toast";
 import { SkeletonLoader } from "../components/loader";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { CartItem } from "../types/types";
+import { useSearchParams } from "react-router-dom";
 
 const Search = () => {
   const dispatch = useDispatch(); // ✅ You missed this line!
+  const searchquery=useSearchParams()[0];
+ 
 
   const {
     data: categoriesResponse,
@@ -25,7 +28,7 @@ const Search = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [maxPrice, setMaxPrice] = useState(100000);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState( searchquery.get("category")||"");
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
 

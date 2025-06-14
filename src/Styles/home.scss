@@ -1,159 +1,291 @@
 .home {
-    padding: 2rem 5%;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  padding: 2rem 5%;
+  display: flex;
+  flex-direction: column;
+  // min-height: calc(100vh - 4rem);
+  max-width: 1920px;
+  margin: auto;
+  width: 100%;
+
+  > section {
+    display: none;
     width: 100%;
-    background-color: rgba(224, 222, 222, 0.829);
-  }
-  
-  .banner {
-    width: 100%;
-    height: 25rem;
+    height: 20rem;
     margin: auto;
-    background-image: url(https://static.vecteezy.com/system/resources/previews/004/299/835/non_2x/online-shopping-on-phone-buy-sell-business-digital-web-banner-application-money-advertising-payment-ecommerce-illustration-search-free-vector.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-radius: 10px;
+    background: url("../assets/cover.jpg") no-repeat center / cover;
   }
-  
-  .title {
+
+  > div {
+    @include flex;
+    align-items: stretch;
+    margin: 2rem 0;
+    gap: 5rem;
+
+    aside {
+      width: 10%;
+      // border: 1px solid $color3;
+      flex: none;
+      h1 {
+        @include heading(1px);
+        margin-bottom: 3rem;
+        @include flex(row, space-between, center);
+        &::before {
+          content: "";
+          width: 3px;
+          height: 2rem;
+          background-color: $color3;
+          position: absolute;
+          transform: translateX(-1rem);
+        }
+      }
+
+      > ul {
+        @include flex(column, flex-start, flex-start);
+        list-style: none;
+        > li {
+          cursor: pointer;
+          color: red;
+          flex: none;
+        }
+      }
+      .findmore {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  > h1 {
+    @include heading(1px);
     margin-top: 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: bold;
+    @include flex(row, space-between, center);
   }
-  
+
   .findmore {
     font-size: 1rem;
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s;
   }
-  
-  .findmore:hover {
-    color: #0056b3;
-  }
-  
-  .products {
+
+  > main {
+    margin: 2rem 0;
     width: 100%;
     display: flex;
     gap: 1rem;
     overflow-x: auto;
-    padding: 1rem 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
-  
-  .products::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .productcard {
-    width: 18rem;
-    height: 25rem;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.5rem;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .productcard:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .productcard img {
+}
+
+.productcard {
+  width: 18rem;
+  height: 25rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.productcard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.productcard img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.productcard span {
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.productcard > .actions {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 10px;
+  transition: opacity 0.3s;
+}
+
+.productcard:hover > .actions {
+  opacity: 1;
+}
+
+.productcard button,
+.productcard a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: none;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  text-decoration: none;
+}
+
+.productcard button:hover,
+.productcard a:hover {
+  transform: scale(1.1);
+  background-color: #0056b3;
+}
+.cover-video-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  @include flex(column);
+
+  .cover-video-overlay {
     width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .productcard span {
-    font-weight: bold;
-    font-size: 1.1rem;
-    text-align: center;
-  }
-  
-  .productcard > div {
-    opacity: 0;
+    height: 100%;
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    transition: opacity 0.3s;
+    z-index: 2;
   }
-  
-  .productcard:hover > div {
-    opacity: 1;
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
-  
-  .productcard button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    border: none;
-    background-color: #007bff;
-    color: #ffffff;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s;
-  }
-  
-  .productcard button:hover {
-    transform: scale(1.1);
-    background-color: #0056b3;
-  }
-  
-  /* Responsive Design */
-  
-  @media (max-width: 768px) {
-    .products {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .productcard {
-      width: 90%;
-      height: auto;
-    }
-  
-    .banner {
-      height: 20rem;
-    }
-  
-    .title {
-      font-size: 1.2rem;
-    }
-  
-    .findmore {
-      font-size: 0.9rem;
+  > span {
+    position: absolute;
+    bottom: 2rem;
+    z-index: 1;
+
+    svg {
+      color: white;
+      font-size: 3rem;
     }
   }
-  
-  @media (max-width: 480px) {
-    .home {
-      padding: 1rem;
+  .cover-video-content {
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    h2 {
+      font-size: 3rem;
     }
-  
-    .banner {
-      height: 15rem;
+    span {
+      font-size: 1.5rem;
     }
   }
-  
+}
+
+.our-services {
+  background-color: #fff; // Light grey background
+  padding: 10rem;
+  position: relative;
+  overflow: hidden;
+
+  > ul {
+    max-width: 1367px;
+    margin: 0 auto;
+
+    @include grid(1fr 1fr 1fr, 0, auto);
+    list-style: none;
+    > li {
+      @include flex(column);
+      > div {
+        background-color: black;
+        @include square(5rem);
+        @include flex;
+        border-radius: 50%;
+        border: 0.6rem solid gray;
+        transition: all 0.3s ease;
+        svg {
+          color: white;
+          font-size: 2.5rem;
+        }
+
+        &:hover {
+          border: 0rem solid rgb(0, 0, 0);
+        }
+      }
+
+      > section {
+        @include flex(column);
+        text-align: center;
+        gap: 0;
+        margin-top: 1rem;
+        h3 {
+          font-size: 1.5rem;
+          color: #000000;
+        }
+        p {
+          font-size: 1rem;
+          color: #3a3a3a;
+        }
+      }
+    }
+  }
+}
+
+.our-clients {
+  background-color: #fff; // Light grey background
+  padding: 10rem;
+  position: relative;
+  overflow: hidden;
+
+  div {
+    max-width: 1367px;
+    margin: 0 auto;
+
+    h2 {
+      color: #333; // Dark text color for the title
+      text-align: center;
+      @include heading;
+      margin-bottom: 4rem;
+      font-size: 2rem;
+    }
+
+    div {
+      @include flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+
+      img {
+        height: 3rem; // Fixed height for all logos
+        width: auto;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1); // Slightly enlarge logos on hover
+        }
+      }
+    }
+
+    p {
+      text-align: center;
+      margin-top: 4rem;
+      margin-bottom: 2rem;
+    }
+  }
+}

@@ -11,7 +11,6 @@ import {
 
 import { userReducerinitialstate } from "../../../types/reducer-types";
 import { useSelector } from "react-redux";
-import { server } from "../../../redux/store";
 import { SkeletonLoader } from "../../../components/loader";
 
 const ProductManagement = () => {
@@ -22,9 +21,9 @@ const ProductManagement = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useProductDetailsQuery(params.id! );
+  const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
 
-  const { price = 0, photos = [], name = "", category = "", stock = 0 } = data?.product || {};
+  const { price = 0, description = "", photos = [], name = "", category = "", stock = 0 } = data?.product || {};
 
   const [priceUpdate, setPriceUpdate] = useState<number>(0);
   const [stockUpdate, setStockUpdate] = useState<number>(0);
@@ -32,6 +31,7 @@ const ProductManagement = () => {
   const [categoryUpdate, setCategoryUpdate] = useState<string>("");
   const [photoUpdate, setPhotoUpdate] = useState<string>("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [descriptionUpdate, setDescriptionUpdate] = useState<string>("");
 
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
@@ -42,6 +42,7 @@ const ProductManagement = () => {
       setPriceUpdate(data.product.price);
       setStockUpdate(data.product.stock);
       setCategoryUpdate(data.product.category);
+      setDescriptionUpdate(data.product.description);
     }
   }, [data]);
 
@@ -77,6 +78,7 @@ const ProductManagement = () => {
     formData.set("price", priceUpdate.toString());
     formData.set("stock", stockUpdate.toString());
     formData.set("category", categoryUpdate);
+    formData.set("description", descriptionUpdate);
 
     if (photoFile) {
       formData.set("photo", photoFile);
@@ -129,7 +131,14 @@ const ProductManagement = () => {
               <strong>ID - {data?.product._id}</strong>
 
               {photos[0]?.url ? (
-                <img src={`${server}/${photos[0].url}`} alt="Product" />
+                <img
+                  src={
+                    photos[0].url.includes("http")
+                      ? photos[0].url
+                      : `http://localhost:4000/${photos[0].url}`
+                  }
+                  alt="Product"
+                />
               ) : (
                 <p>No Image Available</p>
               )}
@@ -198,6 +207,16 @@ const ProductManagement = () => {
                 </div>
 
                 <div>
+                  <label>Description</label>
+                  <textarea
+                    placeholder="Product description..."
+                    value={descriptionUpdate}
+                    onChange={(e) => setDescriptionUpdate(e.target.value)}
+                    required
+                  />
+                </div>
+ 
+                <div >
                   <label>Photo</label>
                   <input type="file" accept="image/*" onChange={changeImageHandler} />
                 </div>

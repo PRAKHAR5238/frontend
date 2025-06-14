@@ -16,6 +16,7 @@ import {
 } from "react-icons/ri";
 import { Link, Location, useLocation } from "react-router-dom";
 import { IconType } from "react-icons";
+import { MdDiscount } from "react-icons/md";
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -96,6 +97,13 @@ const DivOne = ({ location }: { location: Location }) => (
         Icon={IoIosPeople}
         location={location}
       />
+      <Li
+        url="/admin/discount"
+        text="Discount"
+        Icon={MdDiscount}
+        location={location}
+      />
+
       <Li
         url="/admin/transaction"
         text="Transaction"

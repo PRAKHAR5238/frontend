@@ -1,3 +1,5 @@
+import Coupon from "../pages/admin/apps/coupon";
+
 export type User = {
   name: string;
   email: string;
@@ -12,9 +14,26 @@ export type Product = {
   price: number;
   stock: number;
   category: string;
+  rating: number;
+  description: string;
+  numOfReviews: number;
   photos: any[];
   _id: string;
 };
+
+export type Review = {
+  _id: string;
+  rating: number;
+  comment: string;
+  user: {
+    _id: string;
+    name: string;
+    photo: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type shippinginfo = {
   // pinCode: number;
 
@@ -23,21 +42,22 @@ export type shippinginfo = {
   state: string;
   country: string;
   zip: string; // Not 'zip'
+  pinCode?: string; // Not 'zip'
   toFixed?: number; // Optional
 };
 
 export type CartItem = {
-  id: number;       // << This is required
+  id: number; // << This is required
   _id: string;
   stock: number;
   productId: string;
+  product_id?: string;
   name: string;
   quantity: number;
   photo: string;
   price: number;
 };
 export type OrderItems = Omit<CartItem, "stock"> & { _id: string };
-
 
 export type Order = {
   orderItems: OrderItems[];
@@ -54,9 +74,6 @@ export type Order = {
   };
   _id: string;
 };
-
-
-
 
 type CategoryStats = {
   totalProducts: number;
@@ -147,17 +164,23 @@ export type Pie = {
 };
 
 export type bar = {
-  ordersByMonth: any,
-  usersByMonth: any,
-  productsByMonth: any,
+  ordersByMonth: any;
+  usersByMonth: any;
+  productsByMonth: any;
 };
 
-
 export type line = {
-  usersByMonth: any,
-  productsByMonth: any,
-  totalOrders: any,
-  ordersByMonth: any,
-  discountsByMonth:any
-  totalRevenue: any,
+  usersByMonth: any;
+  productsByMonth: any;
+  totalOrders: any;
+  ordersByMonth: any;
+  discountsByMonth: any;
+  totalRevenue: any;
+};
+
+export type Coupontypes = {
+  discountValue: any;
+  code: string;
+  amount: number;
+  _id: string;
 };

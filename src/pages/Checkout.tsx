@@ -13,9 +13,7 @@ import { RootState } from "../redux/store"; // Make sure this path is correct
 import { useSelector } from "react-redux";
 import { useCreateOrderMutation } from "../redux/api/Orderapi";
 
-const stripePromise = loadStripe(
- import.meta.env.VITE_STRIPE_KEY
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -24,6 +22,15 @@ const CheckoutForm = () => {
   const navigate = useNavigate();
 
   const { user } = useSelector((state: RootState) => state.user);
+  const {
+    Cartitems, // ✅ Make sure this matches your reducer naming
+    subtotal,
+    tax,
+    total,
+    discount,
+    shippingCharges,
+    shippinginfo,
+  } = useSelector((state: RootState) => state.cart);
 
   // ✅ Move the hook call to the top level of the component
   const [createOrder] = useCreateOrderMutation();
@@ -40,19 +47,21 @@ const CheckoutForm = () => {
 
     const orderData: NewOrderRequest = {
       shippingInfo: {
-        address: "",
-        city: "",
-        state: "",
-        country: "",
-        zip: "",
+        ...shippinginfo, 
+        pinCode: shippinginfo.zip,
       },
-      orderItems: [],
-      subtotal: 0,
-      tax: 0,
-      shippingCharges: 0,
-      discount: 0,
-      total: 0,
+      orderItems: Cartitems.map((data:any)=>{
+        return {
+          product_id: data.productId,
+          ...data
+        }
+      }),
+      tax: tax,
+      shippingCharges: shippingCharges,
+      discount: discount,
+      total: total,
       user: user?._id || "",
+      subtotal: subtotal
     };
 
     try {
@@ -97,10 +106,7 @@ const CheckoutForm = () => {
     <div className="checkout-container">
       <form onSubmit={submitHandler}>
         <PaymentElement />
-        <button
-          type="submit"
-          disabled={isProcessing || !stripe || !elements}
-        >
+        <button type="submit" disabled={isProcessing || !stripe || !elements}>
           {isProcessing ? "Processing..." : "Pay Now"}
         </button>
       </form>
