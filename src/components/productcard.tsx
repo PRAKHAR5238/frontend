@@ -1,7 +1,6 @@
-
 import { FaExpandAlt, FaPlus } from "react-icons/fa";
 import { CartItem } from "../types/types";
-import { Link } from "react-router-dom"; // ✅ Correct import
+import { Link } from "react-router-dom";
 
 type ProductProps = {
   productId: string;
@@ -50,7 +49,11 @@ const ProductCard = ({
           <button onClick={handleAddToCart} aria-label="Add to Cart">
             <FaPlus />
           </button>
-          <Link  to={`/product/${productId}`} className="details-link" aria-label="View Details">
+          <Link
+            to={`/product/${productId}`}
+            className="details-link"
+            aria-label="View Details"
+          >
             <FaExpandAlt />
           </Link>
         </div>
