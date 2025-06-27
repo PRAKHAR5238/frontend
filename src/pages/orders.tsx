@@ -3,10 +3,10 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Column } from "react-table";
 import TableHOC from "../components/admin/TableHOC";
-import { SkeletonLoader } from "../components/loader";
 
 import { RootState } from "../redux/store";
 import { CustomError } from "../types/api-types";
+import { SkeletonLoader } from "../components/loader";
 import { useMyOrdersQuery } from "../redux/api/Orderapi";
 
 type DataType = {
@@ -43,7 +43,7 @@ const column: Column<DataType>[] = [
 const Orders = () => {
   const { user } = useSelector((state: RootState) => state.user);
 
-  const { isLoading, data, isError, error } = useMyOrdersQuery(user?._id! || "dsjkfhdfj22");
+  const { isLoading, data, isError, error } = useMyOrdersQuery(user?._id!);
 
   const [rows, setRows] = useState<DataType[]>([]);
 
@@ -55,7 +55,7 @@ const Orders = () => {
   useEffect(() => {
     if (data)
       setRows(
-        data.orders.map((i: any) => ({
+        data.orders.map((i) => ({
           _id: i._id,
           amount: i.total,
           discount: i.discount,

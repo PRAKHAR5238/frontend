@@ -5,6 +5,7 @@ import { productAPI } from "./api/Productapi";
 import { CartReducer } from "./reducer/cartReducer";
 import { OrderApi } from "./api/Orderapi";
 import { dashboardApi } from "./api/dashboardapi";
+import { FilterReducer } from "./reducer/filterReducer";
 
 export const server = import.meta.env.VITE_SERVER; // Fixed environment variable name
 
@@ -19,6 +20,7 @@ export const store = configureStore({
     [OrderApi.reducerPath]: OrderApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
     [CartReducer.name]: CartReducer.reducer,
+    [FilterReducer.name]: FilterReducer.reducer,
      // Add the productAPI to manage product-related data
   },
   middleware: (getDefaultMiddleware) =>
@@ -27,6 +29,7 @@ export const store = configureStore({
       .concat(productAPI.middleware) // Middleware for product API
       .concat(OrderApi.middleware) // Middleware for order API
       .concat(dashboardApi.middleware), // Middleware for order API
+      // .concat(FilterReducer.middleware), // Middleware for order API
       
 });
 

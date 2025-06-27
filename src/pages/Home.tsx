@@ -63,10 +63,7 @@ const Home = () => {
     "https://res.cloudinary.com/dj5q966nb/image/upload/v1719253433/ticeufjqvf6napjhdiee.png",
   ];
 
-  const categories = [
-    "Electronics", "Mobiles", "Laptops", "Books", "Fashion", "Appliances",
-    "Furniture", "Home Decor", "Grocery", "Beauty", "Toys", "Fitness"
-  ];
+
 
   const coverMessage = "Fashion isn't just clothes; it's a vibrant language. Silhouettes and textures speak volumes, a conversation starter with every bold print. It's a way to tell our story, a confidence booster, or a playful exploration. From elegance to rebellion, fashion lets us navigate the world in style.".split(" ");
 
@@ -91,16 +88,7 @@ const Home = () => {
         <section></section>
 
         <div>
-          <aside>
-            <h1>Categories</h1>
-            <ul>
-              {categories.map((i) => (
-                <li key={i}>
-                  <Link to={`/search?category=${i.toLowerCase()}`}>{i}</Link>
-                </li>
-              ))}
-            </ul>
-          </aside>
+        
 
           <Slider autoplay autoplayDuration={1500} showNav={false} images={banners} />
         </div>

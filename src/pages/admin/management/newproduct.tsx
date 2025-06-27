@@ -110,7 +110,7 @@ const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
 
             <div>
               <label>Description</label>
-              <textarea
+              <input
                 required
                 placeholder="Description"
                 value={description}

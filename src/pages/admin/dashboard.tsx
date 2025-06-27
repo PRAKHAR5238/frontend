@@ -80,18 +80,21 @@ const Dashboard = () => {
                 color="rgb(255 196 0)"
                 heading="Transactions"
               />
+<WidgetItem
+  percent={
+    (stats.categories.camera?.totalProducts || 0) +
+    (stats.categories.laptop?.totalProducts || 0) +
+    (stats.categories.shoes?.totalProducts || 0)
+  }
+  value={
+    (stats.categories.camera?.totalProducts || 0) +
+    (stats.categories.laptop?.totalProducts || 0) +
+    (stats.categories.shoes?.totalProducts || 0)
+  }
+  color="rgb(76 0 255)"
+  heading="Products"
+/>
 
-              <WidgetItem
-                percent={ (stats.categories.camera?.totalProducts || 0) +
-                  (stats.categories.laptop?.totalProducts || 0)} // Placeholder since no percentage provided in API
-                value={
-                  (stats.categories.camera?.totalProducts || 0) +
-                  (stats.categories.laptop?.totalProducts || 0)
-                 
-                }
-                color="rgb(76 0 255)"
-                heading="Products"
-              />
             </section>
 
             {/* Graph and Categories Section */}
@@ -100,8 +103,8 @@ const Dashboard = () => {
                 <h2>Revenue & Transaction </h2>
                 <BarChart
                   labels={months}
-                  data_1={[stats.revenue.lastMonth.total, stats.revenue.thisMonth.total]}
-                  data_2={[stats.orders.lastMonth.count, stats.orders.thisMonth.count]}
+                  data_1={[stats.revenue.lastMonth.total, '', stats.revenue.thisMonth.total]}
+                  data_2={[stats.orders.lastMonth.count, '' ,stats.orders.thisMonth.count]}
                   title_1="Revenue"
                   title_2="Transaction"
                   bgColor_1="rgb(0, 115, 255)"

@@ -30,7 +30,7 @@ const calculateTotals = (state: CartReducerInitialState) => {
     0
   );
 
-  state.shippingCharges = state.subtotal > 1000 ? 0 : 200;
+  state.shippingCharges =!state.Cartitems.length || state.subtotal > 1000 ? 0 : 200;
   state.tax = Math.round(state.subtotal * 0.18);
 
   state.total = Math.max(

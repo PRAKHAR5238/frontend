@@ -1,60 +1,143 @@
 .product-search {
+  padding: 2rem;
+  @include flex(row, flex-start, stretch, 2rem);
+  min-height: calc(100vh - 6.5vh);
+  position: relative;
+
+  .filter-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1100;
+    background-color: $color1;
+    color: $color3;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
+
+  > aside {
+    min-width: 20rem;
+    max-width: 100%;
+    box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.247);
     padding: 2rem;
-    @include flex(row, flex-start, stretch, 2rem);
-    min-height: calc(100vh - 6.5vh);
+    @include flex(column, flex-start, stretch, 0.5rem);
+    background-color: white;
+    transition: transform 0.3s ease-in-out;
 
-    >aside {
-        min-width: 20rem;
-   box-shadow: 2px 5px 10px rgba(0,0,0,0.247);
-        padding: 2rem;
-        @include flex (column, flex-start, stretch, 0.5rem);
-
-        >h2 {
-            @include heading;
-        }
-
-        >div {
-
-            >input,
-            >select {
-                @include inputStyle(100%, 1rem, white, 1px solid rgba(154, 154, 154, 0.38));
-                border-radius: 10px;
-                margin: 0.5rem;
-            }
-        }
+    > h2 {
+      @include heading;
     }
 
-    main{
-        width: 100%;
-        padding: 0 2rem;
-        @include heading;
-
-        > input{
-            @include inputStyle(50%);
-            border-radius: 5px;
-            margin: 1rem;
-            font-size: 1.2rem;
-            display: block;
+    > div {
+      > input,
+      > select {
+        @include inputStyle(100%, 1rem, white, 1px solid rgba(154, 154, 154, 0.38));
+        border-radius: 10px;
+        margin: 0.5rem 0;
+      }
     }
- .search-product-list{
-    @include flex(row,flex-start,flex-start);
-    flex-wrap: wrap;
-    height: calc(100% - 10rem);
-    overflow-y: auto;
+  }
 
- }
- article {
-    @include flex;
-    > button{
+  main {
+    width: 100%;
+    padding: 0 2rem;
+    @include heading;
+
+    > input {
+      @include inputStyle(100%);
+      border-radius: 5px;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+      display: block;
+    }
+
+    .search-product-list {
+      @include flex(row, flex-start, flex-start);
+      flex-wrap: wrap;
+      height: auto;
+      gap: 1rem;
+    }
+
+    article {
+      @include flex;
+      gap: 1rem;
+      margin: 2rem 0;
+
+      > button {
         @include flex;
-    @include btn(0.5rem 1rem, $color3,$color1);
-    border-radius: 10px;
-     &:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-        color: $color2;
-     }
+        @include btn(0.5rem 1rem, $color3, $color1);
+        border-radius: 10px;
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+          color: $color2;
+        }
+      }
     }
- }
+  }
+
+  // Responsive Section
+  @media screen and (max-width: 768px) {
+    @include flex(column, flex-start, stretch, 2rem);
+
+    .filter-toggle {
+      display: block;
     }
+
+    > aside {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 80%;
+      max-width: 300px;
+      background-color: white;
+      z-index: 1050;
+      transform: translateX(-100%);
+      padding: 2rem;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    > aside.visible {
+      transform: translateX(0);
+    }
+
+    main {
+      padding: 0;
+      width: 100%;
+
+      > input {
+        width: 100%;
+      }
+
+      .search-product-list {
+        justify-content: center;
+      }
+
+      article {
+        justify-content: center;
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 1rem;
+
+    > aside {
+      padding: 1rem 0;
+    }
+
+    main {
+      padding: 0;
+
+      > input {
+        font-size: 1rem;
+      }
+    }
+  }
 }

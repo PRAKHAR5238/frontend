@@ -9,7 +9,8 @@ import {
   removeFromCart,
   discountApplied,
   saveCoupon,
-  calculatePrice, // ✅ Import this!
+  calculatePrice,
+  resetCart, // ✅ Import this!
 } from "../redux/reducer/cartReducer";
 import axios from "axios";
 
@@ -58,6 +59,7 @@ const Cart = () => {
       setCouponMessage("");
       dispatch(discountApplied(0));
       dispatch(calculatePrice());
+ 
       return;
     }
 
@@ -110,6 +112,7 @@ const Cart = () => {
       </main>
 
       <aside>
+        <div className="tax-details">
         <p>Subtotal: ${subtotal}</p>
         <p>Tax: ${tax}</p>
         <p>Shipping Charges: ${shippingCharges}</p>
@@ -119,6 +122,7 @@ const Cart = () => {
         <p>
           <b>Total: ${total}</b>
         </p>
+        </div>
 
         <input
           type="text"

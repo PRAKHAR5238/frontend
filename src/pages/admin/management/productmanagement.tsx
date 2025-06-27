@@ -208,7 +208,7 @@ const ProductManagement = () => {
 
                 <div>
                   <label>Description</label>
-                  <textarea
+                  <input
                     placeholder="Product description..."
                     value={descriptionUpdate}
                     onChange={(e) => setDescriptionUpdate(e.target.value)}

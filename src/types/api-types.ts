@@ -150,3 +150,10 @@ export type CustomError = {
     success: boolean;
   };
 };
+
+
+// 👇 Add this type in api-types.ts if not already there
+export interface UpdateUserRoleRequest {
+  userId: string;
+  role: "admin" | "user";
+}

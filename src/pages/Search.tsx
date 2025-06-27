@@ -1,6 +1,6 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "../components/productcard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useCategoriesQuery,
   useSearchProductQuery,
@@ -12,25 +12,22 @@ import { SkeletonLoader } from "../components/loader";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { CartItem } from "../types/types";
 import { useSearchParams } from "react-router-dom";
+import { RootState } from "../redux/store";
 
 const Search = () => {
-  const dispatch = useDispatch(); // ✅ You missed this line!
-  const searchquery=useSearchParams()[0];
- 
-
-  const {
-    data: categoriesResponse,
-    isLoading: loadingCategories,
-    isError,
-    error,
-  } = useCategoriesQuery(undefined);
+  const dispatch = useDispatch();
 
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("");
-  const [maxPrice, setMaxPrice] = useState(100000);
-  const [category, setCategory] = useState( searchquery.get("category")||"");
+  // const [sort, setSort] = useState("");
+  // const [maxPrice, setMaxPrice] = useState(100000);
+  // const [category, setCategory] = useState(searchquery.get("category") || "");
+  const { category, sort, maxPrice } = useSelector(
+    (state: RootState) => state.filter
+  );
+  console.log(sort);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
+  const [showFilter, setShowFilter] = useState(false); // NEW
 
   const {
     data: productsResponse,
@@ -47,21 +44,15 @@ const Search = () => {
 
     dispatch(addToCart(cartItem));
     toast.success("Added to cart");
-
     return "Success";
   };
 
   useEffect(() => {
-    if (isError && error) {
-      const err = error as CustomError;
-      toast.error(err?.data?.message || "Failed to fetch categories.");
-    }
-
     if (productsError && productsErrorMsg) {
       const err = productsErrorMsg as CustomError;
       toast.error(err?.data?.message || "Failed to fetch products.");
     }
-  }, [isError, error, productsError, productsErrorMsg]);
+  }, [productsError, productsErrorMsg]);
 
   useEffect(() => {
     if (productsResponse?.totalPage) {
@@ -71,7 +62,14 @@ const Search = () => {
 
   return (
     <div className="product-search">
-      <aside>
+      <button
+        className="filter-toggle"
+        onClick={() => setShowFilter((prev) => !prev)}
+      >
+        {showFilter ? "Hide Filters" : "Show Filters"}
+      </button>
+
+      {/* <aside className={`filters ${showFilter ? "visible" : ""}`}>
         <h2>Filters</h2>
 
         <div>
@@ -114,7 +112,7 @@ const Search = () => {
             )}
           </select>
         </div>
-      </aside>
+      </aside> */}
 
       <main>
         <h1>Products</h1>
@@ -125,31 +123,32 @@ const Search = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-      <div className="search-product-list">
-  {loadingProducts ? (
-    <SkeletonLoader length={10} />
-  ) : productsResponse?.products?.length ? (
-    productsResponse.products.map((product) => (
-      <ProductCard
-        key={product._id}
-        productId={product._id}
-        name={product.name}        
-        price={product.price}      
-        photo={
-          product.photos?.[0]?.url 
-            ? (product.photos[0].url.includes('http') ? '' : 'http://localhost:4000/') + product.photos[0].url 
-            : ''
-        }
-        stock={product.stock}
-        handler={addToCartHandler}
-        server=""
-      />
-    ))
-  ) : (
-    <p>No products found.</p>
-  )}
-</div>
-
+        <div className="search-product-list">
+          {loadingProducts ? (
+            <SkeletonLoader length={10} />
+          ) : productsResponse?.products?.length ? (
+            productsResponse.products.map((product) => (
+              <ProductCard
+                key={product._id}
+                productId={product._id}
+                name={product.name}
+                price={product.price}
+                photo={
+                  product.photos?.[0]?.url
+                    ? (product.photos[0].url.includes("http")
+                        ? ""
+                        : "http://localhost:4000/") + product.photos[0].url
+                    : ""
+                }
+                stock={product.stock}
+                handler={addToCartHandler}
+                server=""
+              />
+            ))
+          ) : (
+            <p>No products found.</p>
+          )}
+        </div>
 
         {maxPage > 1 && (
           <article>

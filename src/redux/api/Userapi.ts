@@ -4,6 +4,7 @@ import {
   AllUsersResponse,
   DeleteUserRequest,
   MessageResponse,
+  UpdateUserRoleRequest,
 } from "../../types/api-types";
 import { User } from "../../types/types";
 
@@ -11,7 +12,7 @@ export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/v1/user`,
-    // credentials: "include" // Uncomment if working with cookies/sessions
+    // credentials: "include",
   }),
   tagTypes: ["users"],
   endpoints: (builder) => ({
@@ -31,7 +32,7 @@ export const userApi = createApi({
     // ✅ Delete User Mutation
     deleteUser: builder.mutation<MessageResponse, DeleteUserRequest>({
       query: ({ userId, adminUserId }) => ({
-        url: `${userId}?id=${adminUserId}`, // Matches the backend route: /:userId?id=adminId
+        url: `${userId}?id=${adminUserId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["users"],
@@ -39,9 +40,23 @@ export const userApi = createApi({
 
     // ✅ Get All Users Query
     allUsers: builder.query<AllUsersResponse, string>({
-      query: (id) => `all?id=${id}`, // ✅ Correct query parameter syntax
+      query: (id) => `all?id=${id}`,
       providesTags: ["users"],
     }),
+
+    // ✅ Update User Role Mutation (correctly placed inside endpoints)
+  updateUserRole: builder.mutation<MessageResponse, UpdateUserRoleRequest>({
+  query: ({ userId, role }) => ({
+    url: `${userId}/role`,
+    method: "PUT",
+    body: { role }, // ✅ Send plain JSON
+    headers: {
+      "Content-Type": "application/json", // ✅ Matches backend expectations
+    },
+  }),
+  invalidatesTags: ["users"],
+}),
+
   }),
 });
 
@@ -57,9 +72,10 @@ export const getUser = async (id: string) => {
   }
 };
 
-// ✅ Export hooks from userApi
+// ✅ Export hooks
 export const {
   useLoginUserMutation,
   useAllUsersQuery,
   useDeleteUserMutation,
+  useUpdateUserRoleMutation,
 } = userApi;
